@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 class HikariConfigBuilderTests {
 
-  private static final String VALID_DRIVER_CLASS_NAME = "org.mysql.cj.Driver";
+  private static final String VALID_DRIVER_CLASS_NAME = "org.mysql.cj.jdbc.Driver";
   private static final String VALID_JDBC_URI = "jdbc:mysql://127.0.0.1:3306/juliet_test";
   private static final String VALID_USERNAME = "shitzuu";
   private static final String VALID_PASSWORD = "my-secret-password-123";
