@@ -92,6 +92,7 @@ class HikariConfigBuilderTests {
 
   @Test
   void verifyBuiltHikariConfigWithSpecifyingDriverClassNameTest() {
+    loadCustomDriverClassNameIntoClasspath();
     assertThat(HikariConfigBuilder.newBuilder()
         .withDriverClassName(VALID_DRIVER_CLASS_NAME)
         .withJdbcUri(VALID_JDBC_URI)
@@ -107,5 +108,13 @@ class HikariConfigBuilderTests {
         .build())
         .extracting(HikariConfig::getJdbcUrl, HikariConfig::getDriverClassName)
         .containsExactly(VALID_JDBC_URI, null);
+  }
+
+  private void loadCustomDriverClassNameIntoClasspath() {
+    try {
+      Class.forName(VALID_DRIVER_CLASS_NAME);
+    } catch (ClassNotFoundException ignored) {
+
+    }
   }
 }
