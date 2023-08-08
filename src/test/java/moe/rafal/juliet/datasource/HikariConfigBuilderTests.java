@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 
 class HikariConfigBuilderTests {
 
+  private static final String VALID_DRIVER_CLASS_NAME = "org.mysql.cj.Driver";
   private static final String VALID_JDBC_URI = "jdbc:mysql://127.0.0.1:3306/juliet_test";
   private static final String VALID_USERNAME = "shitzuu";
   private static final String VALID_PASSWORD = "my-secret-password-123";
@@ -87,5 +88,24 @@ class HikariConfigBuilderTests {
             HikariConfig::getUsername,
             HikariConfig::getPassword)
         .containsExactly(VALID_JDBC_URI, null, null);
+  }
+
+  @Test
+  void verifyBuiltHikariConfigWithSpecifyingDriverClassNameTest() {
+    assertThat(HikariConfigBuilder.newBuilder()
+        .withDriverClassName(VALID_DRIVER_CLASS_NAME)
+        .withJdbcUri(VALID_JDBC_URI)
+        .build())
+        .extracting(HikariConfig::getJdbcUrl, HikariConfig::getDriverClassName)
+        .containsExactly(VALID_JDBC_URI, VALID_DRIVER_CLASS_NAME);
+  }
+
+  @Test
+  void verifyBuiltHikariConfigWithoutSpecifyingDriverClassNameTest() {
+    assertThat(HikariConfigBuilder.newBuilder()
+        .withJdbcUri(VALID_JDBC_URI)
+        .build())
+        .extracting(HikariConfig::getJdbcUrl, HikariConfig::getDriverClassName)
+        .containsExactly(VALID_JDBC_URI, null);
   }
 }

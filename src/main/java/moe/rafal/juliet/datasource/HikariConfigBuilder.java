@@ -21,6 +21,7 @@ import com.zaxxer.hikari.HikariConfig;
 
 public final class HikariConfigBuilder {
 
+  private String driverClassName;
   private String jdbcUri;
   private String username;
   private String password;
@@ -31,6 +32,11 @@ public final class HikariConfigBuilder {
 
   public static HikariConfigBuilder newBuilder() {
     return new HikariConfigBuilder();
+  }
+
+  public HikariConfigBuilder withDriverClassName(String driverClassName) {
+    this.driverClassName = driverClassName;
+    return this;
   }
 
   public HikariConfigBuilder withJdbcUri(String jdbcUri) {
@@ -56,6 +62,11 @@ public final class HikariConfigBuilder {
 
     HikariConfig hikariConfig = new HikariConfig();
     hikariConfig.setJdbcUrl(jdbcUri);
+
+    boolean whetherCustomDriverIsSpecified = driverClassName != null;
+    if (whetherCustomDriverIsSpecified) {
+      hikariConfig.setDriverClassName(driverClassName);
+    }
 
     final boolean whetherUsernameIsSpecified = username != null;
     if (whetherUsernameIsSpecified) {
