@@ -15,22 +15,20 @@
  *
  */
 
-package moe.rafal.juliet.datasource;
+package moe.rafal.juliet;
 
 import static moe.rafal.juliet.datasource.HikariPooledDatasourceUtils.produceHikariDataSourceByContainer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.testcontainers.utility.DockerImageName.parse;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-class HikariPooledDatasourceTests {
+class JulietBuilderTests {
 
   @Container
   private final MySQLContainer<?> mySQLContainer = new MySQLContainer<>(parse("mysql:latest"))
@@ -43,19 +41,18 @@ class HikariPooledDatasourceTests {
   }
 
   @Test
-  void verifyWhetherConnectionWasResolvedSuccessfullyTest() throws SQLException {
-    try (Connection connection = produceHikariDataSourceByContainer(mySQLContainer).borrowConnection()) {
-      assertThat(connection).isNotNull();
-    }
+  void verifyWhetherJulietIsBuiltSuccessfullyTest() {
+    assertThatCode(() -> JulietBuilder.newBuilder()
+        .withDataSource(produceHikariDataSourceByContainer(mySQLContainer))
+        .build())
+        .doesNotThrowAnyException();
   }
 
   @Test
-  void verifyWhetherConnectionIsBeingTerminatedTest() throws SQLException {
-    PooledDataSource hikariDataSource = produceHikariDataSourceByContainer(mySQLContainer);
-    Connection connection = hikariDataSource.borrowConnection();
-    hikariDataSource.close();
-    assertThatCode(connection::createStatement)
-        .isInstanceOf(SQLException.class)
-        .hasMessage("No operations allowed after connection closed.");
+  void verifyThrownExceptionWhenBuiltWithoutDataSourceTest() {
+    assertThatCode(() -> JulietBuilder.newBuilder().build())
+        .isInstanceOf(JulietBuildException.class)
+        .hasMessage(
+            "Juliet could not be built, because of missing data source, which is required for proper functioning.");
   }
 }
