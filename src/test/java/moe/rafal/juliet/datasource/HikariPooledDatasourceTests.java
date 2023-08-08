@@ -19,6 +19,7 @@ package moe.rafal.juliet.datasource;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.testcontainers.utility.DockerImageName.parse;
 
 import java.sql.Connection;
@@ -46,6 +47,16 @@ class HikariPooledDatasourceTests {
     try (Connection connection = getHikariDataSource().borrowConnection()) {
       assertThat(connection).isNotNull();
     }
+  }
+
+  @Test
+  void verifyWhetherConnectionIsBeingTerminatedTest() throws SQLException {
+    PooledDataSource hikariDataSource = getHikariDataSource();
+    Connection connection = hikariDataSource.borrowConnection();
+    hikariDataSource.close();
+    assertThatCode(connection::createStatement)
+        .isInstanceOf(SQLException.class)
+        .hasMessage("No operations allowed after connection closed.");
   }
 
   private PooledDataSource getHikariDataSource() {
