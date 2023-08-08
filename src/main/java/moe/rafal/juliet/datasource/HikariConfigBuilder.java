@@ -64,7 +64,7 @@ public final class HikariConfigBuilder {
 
     final boolean whetherPasswordIsSpecified = password != null;
     if (whetherPasswordIsSpecified) {
-      hikariConfig.setPassword(username);
+      hikariConfig.setPassword(password);
     }
 
     return hikariConfig;
