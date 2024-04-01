@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 juliet
+ *    Copyright 2023-2024 juliet
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ class JulietImpl implements Juliet {
 
   private final PooledDataSource dataSource;
 
-  JulietImpl(PooledDataSource dataSource) {
+  JulietImpl(final PooledDataSource dataSource) {
     this.dataSource = dataSource;
   }
 

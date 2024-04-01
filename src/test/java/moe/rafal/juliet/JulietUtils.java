@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 juliet
+ *    Copyright 2023-2024 juliet
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,19 +17,17 @@
 
 package moe.rafal.juliet;
 
-import static moe.rafal.juliet.datasource.HikariPooledDatasourceUtils.produceHikariDataSourceByContainer;
+import static moe.rafal.juliet.datasource.HikariPooledDatasourceUtils.getHikariDataSourceByContainer;
 
 import org.testcontainers.containers.MySQLContainer;
 
 final class JulietUtils {
 
-  private JulietUtils() {
+  private JulietUtils() {}
 
-  }
-
-  public static Juliet produceJulietByContainer(MySQLContainer<?> container) {
+  public static Juliet getJulietByContainer(final MySQLContainer<?> container) {
     return JulietBuilder.newBuilder()
-        .withDataSource(produceHikariDataSourceByContainer(container))
+        .withDataSource(getHikariDataSourceByContainer(container))
         .build();
   }
 }

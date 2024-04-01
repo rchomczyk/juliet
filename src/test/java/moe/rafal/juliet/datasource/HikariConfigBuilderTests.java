@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 juliet
+ *    Copyright 2023-2024 juliet
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import com.zaxxer.hikari.HikariConfig;
+import moe.rafal.juliet.datasource.hikari.HikariConfigBuildException;
+import moe.rafal.juliet.datasource.hikari.HikariConfigBuilder;
 import org.junit.jupiter.api.Test;
 
 class HikariConfigBuilderTests {
@@ -40,71 +42,59 @@ class HikariConfigBuilderTests {
 
   @Test
   void verifyBuiltHikariConfigWithSpecifyingUsernameAndPasswordTest() {
-    assertThat(HikariConfigBuilder.newBuilder()
-        .withJdbcUri(VALID_JDBC_URI)
-        .withUsername(VALID_USERNAME)
-        .withPassword(VALID_PASSWORD)
-        .build())
-        .extracting(
-            HikariConfig::getJdbcUrl,
-            HikariConfig::getUsername,
-            HikariConfig::getPassword)
+    assertThat(
+            HikariConfigBuilder.newBuilder()
+                .withJdbcUri(VALID_JDBC_URI)
+                .withUsername(VALID_USERNAME)
+                .withPassword(VALID_PASSWORD)
+                .build())
+        .extracting(HikariConfig::getJdbcUrl, HikariConfig::getUsername, HikariConfig::getPassword)
         .containsExactly(VALID_JDBC_URI, VALID_USERNAME, VALID_PASSWORD);
   }
 
   @Test
   void verifyBuiltHikariConfigWithoutSpecifyingUsernameTest() {
-    assertThat(HikariConfigBuilder.newBuilder()
-        .withJdbcUri(VALID_JDBC_URI)
-        .withPassword(VALID_PASSWORD)
-        .build())
-        .extracting(
-            HikariConfig::getJdbcUrl,
-            HikariConfig::getUsername,
-            HikariConfig::getPassword)
+    assertThat(
+            HikariConfigBuilder.newBuilder()
+                .withJdbcUri(VALID_JDBC_URI)
+                .withPassword(VALID_PASSWORD)
+                .build())
+        .extracting(HikariConfig::getJdbcUrl, HikariConfig::getUsername, HikariConfig::getPassword)
         .containsExactly(VALID_JDBC_URI, null, VALID_PASSWORD);
   }
 
   @Test
   void verifyBuiltHikariConfigWithoutSpecifyingPasswordTest() {
-    assertThat(HikariConfigBuilder.newBuilder()
-        .withJdbcUri(VALID_JDBC_URI)
-        .withUsername(VALID_USERNAME)
-        .build())
-        .extracting(
-            HikariConfig::getJdbcUrl,
-            HikariConfig::getUsername,
-            HikariConfig::getPassword)
+    assertThat(
+            HikariConfigBuilder.newBuilder()
+                .withJdbcUri(VALID_JDBC_URI)
+                .withUsername(VALID_USERNAME)
+                .build())
+        .extracting(HikariConfig::getJdbcUrl, HikariConfig::getUsername, HikariConfig::getPassword)
         .containsExactly(VALID_JDBC_URI, VALID_USERNAME, null);
   }
 
   @Test
   void verifyBuiltHikariConfigWithoutBothUsernameAndPasswordTest() {
-    assertThat(HikariConfigBuilder.newBuilder()
-        .withJdbcUri(VALID_JDBC_URI)
-        .build())
-        .extracting(
-            HikariConfig::getJdbcUrl,
-            HikariConfig::getUsername,
-            HikariConfig::getPassword)
+    assertThat(HikariConfigBuilder.newBuilder().withJdbcUri(VALID_JDBC_URI).build())
+        .extracting(HikariConfig::getJdbcUrl, HikariConfig::getUsername, HikariConfig::getPassword)
         .containsExactly(VALID_JDBC_URI, null, null);
   }
 
   @Test
   void verifyBuiltHikariConfigWithSpecifyingDriverClassNameTest() {
-    assertThat(HikariConfigBuilder.newBuilder()
-        .withDriverClassName(VALID_DRIVER_CLASS_NAME)
-        .withJdbcUri(VALID_JDBC_URI)
-        .build())
+    assertThat(
+            HikariConfigBuilder.newBuilder()
+                .withDriverClassName(VALID_DRIVER_CLASS_NAME)
+                .withJdbcUri(VALID_JDBC_URI)
+                .build())
         .extracting(HikariConfig::getJdbcUrl, HikariConfig::getDriverClassName)
         .containsExactly(VALID_JDBC_URI, VALID_DRIVER_CLASS_NAME);
   }
 
   @Test
   void verifyBuiltHikariConfigWithoutSpecifyingDriverClassNameTest() {
-    assertThat(HikariConfigBuilder.newBuilder()
-        .withJdbcUri(VALID_JDBC_URI)
-        .build())
+    assertThat(HikariConfigBuilder.newBuilder().withJdbcUri(VALID_JDBC_URI).build())
         .extracting(HikariConfig::getJdbcUrl, HikariConfig::getDriverClassName)
         .containsExactly(VALID_JDBC_URI, null);
   }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 juliet
+ *    Copyright 2023-2024 juliet
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,18 +15,11 @@
  *
  */
 
-package moe.rafal.juliet.datasource;
+package moe.rafal.juliet.datasource.hikari;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+public class HikariConfigBuildException extends IllegalArgumentException {
 
-public final class HikariPooledDataSourceFactory {
-
-  private HikariPooledDataSourceFactory() {
-
-  }
-
-  public static PooledDataSource produceHikariDataSource(HikariConfig hikariConfig) {
-    return new HikariPooledDataSource(new HikariDataSource(hikariConfig));
+  HikariConfigBuildException(final String message) {
+    super(message);
   }
 }

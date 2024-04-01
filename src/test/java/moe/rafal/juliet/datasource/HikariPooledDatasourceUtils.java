@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 juliet
+ *    Copyright 2023-2024 juliet
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,21 +18,26 @@
 package moe.rafal.juliet.datasource;
 
 import static java.lang.String.format;
+import static moe.rafal.juliet.datasource.hikari.HikariPooledDataSourceFactory.getHikariDataSource;
 
+import moe.rafal.juliet.datasource.hikari.HikariConfigBuilder;
 import org.testcontainers.containers.MySQLContainer;
 
 public final class HikariPooledDatasourceUtils {
 
-  private HikariPooledDatasourceUtils() {
+  private HikariPooledDatasourceUtils() {}
 
-  }
-
-  public static PooledDataSource produceHikariDataSourceByContainer(MySQLContainer<?> container) {
-    return HikariPooledDataSourceFactory.produceHikariDataSource(HikariConfigBuilder.newBuilder()
-        .withJdbcUri(format("jdbc:mysql://%s:%d/%s",
-            container.getHost(), container.getFirstMappedPort(), container.getDatabaseName()))
-        .withUsername(container.getUsername())
-        .withPassword(container.getPassword())
-        .build());
+  public static PooledDataSource getHikariDataSourceByContainer(final MySQLContainer<?> container) {
+    return getHikariDataSource(
+        HikariConfigBuilder.newBuilder()
+            .withJdbcUri(
+                format(
+                    "jdbc:mysql://%s:%d/%s",
+                    container.getHost(),
+                    container.getFirstMappedPort(),
+                    container.getDatabaseName()))
+            .withUsername(container.getUsername())
+            .withPassword(container.getPassword())
+            .build());
   }
 }

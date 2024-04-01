@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 juliet
+ *    Copyright 2023-2024 juliet
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,18 +15,19 @@
  *
  */
 
-package moe.rafal.juliet.datasource;
+package moe.rafal.juliet.datasource.hikari;
 
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import moe.rafal.juliet.datasource.PooledDataSource;
 
 class HikariPooledDataSource implements PooledDataSource {
 
   private final HikariDataSource underlyingDataSource;
 
-  HikariPooledDataSource(HikariDataSource underlyingDataSource) {
+  HikariPooledDataSource(final HikariDataSource underlyingDataSource) {
     this.underlyingDataSource = underlyingDataSource;
   }
 

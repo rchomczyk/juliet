@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 juliet
+ *    Copyright 2023-2024 juliet
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,9 +15,10 @@
  *
  */
 
-package moe.rafal.juliet.datasource;
+package moe.rafal.juliet.datasource.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
+import java.util.Properties;
 
 public final class HikariConfigBuilder {
 
@@ -25,32 +26,41 @@ public final class HikariConfigBuilder {
   private String jdbcUri;
   private String username;
   private String password;
+  private Properties dataSourceProperties = new Properties();
 
-  private HikariConfigBuilder() {
-
-  }
+  private HikariConfigBuilder() {}
 
   public static HikariConfigBuilder newBuilder() {
     return new HikariConfigBuilder();
   }
 
-  public HikariConfigBuilder withDriverClassName(String driverClassName) {
+  public HikariConfigBuilder withDriverClassName(final String driverClassName) {
     this.driverClassName = driverClassName;
     return this;
   }
 
-  public HikariConfigBuilder withJdbcUri(String jdbcUri) {
+  public HikariConfigBuilder withJdbcUri(final String jdbcUri) {
     this.jdbcUri = jdbcUri;
     return this;
   }
 
-  public HikariConfigBuilder withUsername(String username) {
+  public HikariConfigBuilder withUsername(final String username) {
     this.username = username;
     return this;
   }
 
-  public HikariConfigBuilder withPassword(String password) {
+  public HikariConfigBuilder withPassword(final String password) {
     this.password = password;
+    return this;
+  }
+
+  public HikariConfigBuilder withDatasourceProperty(final String key, final String value) {
+    dataSourceProperties.setProperty(key, value);
+    return this;
+  }
+
+  public HikariConfigBuilder withDatasourceProperties(final Properties dataSourceProperties) {
+    this.dataSourceProperties = dataSourceProperties;
     return this;
   }
 
@@ -63,21 +73,19 @@ public final class HikariConfigBuilder {
     HikariConfig hikariConfig = new HikariConfig();
     hikariConfig.setJdbcUrl(jdbcUri);
 
-    boolean whetherCustomDriverIsSpecified = driverClassName != null;
-    if (whetherCustomDriverIsSpecified) {
-      hikariConfig.setDriverClassName(driverClassName);
-    }
-
-    final boolean whetherUsernameIsSpecified = username != null;
-    if (whetherUsernameIsSpecified) {
+    if (username != null) {
       hikariConfig.setUsername(username);
     }
 
-    final boolean whetherPasswordIsSpecified = password != null;
-    if (whetherPasswordIsSpecified) {
+    if (password != null) {
       hikariConfig.setPassword(password);
     }
 
+    if (driverClassName != null) {
+      hikariConfig.setDriverClassName(driverClassName);
+    }
+
+    hikariConfig.setDataSourceProperties(dataSourceProperties);
     return hikariConfig;
   }
 }

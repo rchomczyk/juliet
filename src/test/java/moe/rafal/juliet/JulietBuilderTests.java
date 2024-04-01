@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 juliet
+ *    Copyright 2023-2024 juliet
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 package moe.rafal.juliet;
 
-import static moe.rafal.juliet.datasource.HikariPooledDatasourceUtils.produceHikariDataSourceByContainer;
+import static moe.rafal.juliet.datasource.HikariPooledDatasourceUtils.getHikariDataSourceByContainer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.testcontainers.utility.DockerImageName.parse;
@@ -31,20 +31,21 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class JulietBuilderTests {
 
   @Container
-  private final MySQLContainer<?> mySQLContainer = new MySQLContainer<>(parse("mysql:latest"))
-      .withReuse(true);
+  private final MySQLContainer<?> mySQLContainer =
+      new MySQLContainer<>(parse("mysql:latest")).withReuse(true);
 
   @Test
   void verifyWhetherContainerIsRunningTest() {
-    assertThat(mySQLContainer.isRunning())
-        .isTrue();
+    assertThat(mySQLContainer.isRunning()).isTrue();
   }
 
   @Test
   void verifyWhetherJulietIsBuiltSuccessfullyTest() {
-    assertThatCode(() -> JulietBuilder.newBuilder()
-        .withDataSource(produceHikariDataSourceByContainer(mySQLContainer))
-        .build())
+    assertThatCode(
+            () ->
+                JulietBuilder.newBuilder()
+                    .withDataSource(getHikariDataSourceByContainer(mySQLContainer))
+                    .build())
         .doesNotThrowAnyException();
   }
 

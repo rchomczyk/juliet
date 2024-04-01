@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 juliet
+ *    Copyright 2023-2024 juliet
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,15 +23,13 @@ public final class JulietBuilder {
 
   private PooledDataSource dataSource;
 
-  private JulietBuilder() {
-
-  }
+  private JulietBuilder() {}
 
   public static JulietBuilder newBuilder() {
     return new JulietBuilder();
   }
 
-  public JulietBuilder withDataSource(PooledDataSource dataSource) {
+  public JulietBuilder withDataSource(final PooledDataSource dataSource) {
     this.dataSource = dataSource;
     return this;
   }
