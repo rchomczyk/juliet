@@ -1,0 +1,7 @@
+[versions]
+hikaricp = "5.1.0"
+annotations = "24.1.0"
+
+[libraries]
+hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "hikaricp" }
+annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
