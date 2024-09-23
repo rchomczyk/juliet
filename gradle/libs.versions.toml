@@ -1,5 +1,5 @@
 [versions]
-hikaricp = "5.1.0"
+hikaricp = "6.0.0"
 annotations = "24.1.0"
 
 [libraries]
