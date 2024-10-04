@@ -5,12 +5,12 @@ plugins {
 dependencies {
     testImplementation("com.mysql:mysql-connector-j:9.0.0")
     testImplementation("org.assertj:assertj-core:3.26.3")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.0")
-    testImplementation("org.testcontainers:testcontainers:1.20.1")
-    testImplementation("org.testcontainers:junit-jupiter:1.20.1")
-    testImplementation("org.testcontainers:mysql:1.20.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.2")
+    testImplementation("org.testcontainers:testcontainers:1.20.2")
+    testImplementation("org.testcontainers:junit-jupiter:1.20.2")
+    testImplementation("org.testcontainers:mysql:1.20.2")
     testImplementation("org.slf4j:slf4j-simple:2.1.0-alpha1")
 }
 
