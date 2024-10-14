@@ -1,6 +1,6 @@
 [versions]
 hikaricp = "5.1.0"
-annotations = "24.1.0"
+annotations = "26.0.1"
 
 [libraries]
 hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "hikaricp" }
